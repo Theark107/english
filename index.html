@@ -49,39 +49,43 @@
 
     </style>
 </head>
-<body>
+<!-- 생략된 HTML, 스타일 동일 -->
 
+<body>
     <div class="container">
         <h1>학생 이름을 입력하세요</h1>
         <input type="text" id="student-name" placeholder="이름을 입력하세요">
         <br>
-        <button onclick="startTest()">시험 보기</button>
+        <button id="start-button">시험 보기</button>
     </div>
 
- <script>
-    function startTest() {
-        const studentName = document.getElementById("student-name").value.trim();
-        if (!studentName) {
-            alert("학생 이름을 입력해주세요.");
-            return;
+    <script>
+        function startTest() {
+            const studentName = document.getElementById("student-name").value.trim();
+            if (!studentName) {
+                alert("학생 이름을 입력해주세요.");
+                return;
+            }
+
+            localStorage.setItem("studentName", studentName);
+            window.location.href = "practice.html";
         }
 
-        localStorage.setItem("studentName", studentName);
-        window.location.href = "practice.html";
-    }
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("student-name");
+            const button = document.getElementById("start-button");
 
-    window.addEventListener("DOMContentLoaded", function () {
-        const input = document.getElementById("student-name");
-        input.focus(); // 페이지 로드시 커서 자동 위치
+            input.focus();
 
-        input.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                startTest();
-            }
+            input.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    startTest();
+                }
+            });
+
+            button.addEventListener("click", startTest);
         });
-    });
-</script>
-
-
+    </script>
 </body>
+
 </html>
