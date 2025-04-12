@@ -58,7 +58,7 @@
         <button onclick="startTest()">시험 보기</button>
     </div>
 
-  <script>
+ <script>
     function startTest() {
         const studentName = document.getElementById("student-name").value.trim();
         if (!studentName) {
@@ -70,15 +70,18 @@
         window.location.href = "practice.html";
     }
 
-    // DOM이 완전히 로드된 후에 이벤트 등록
     window.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("student-name").addEventListener("keydown", function (event) {
+        const input = document.getElementById("student-name");
+        input.focus(); // 페이지 로드시 커서 자동 위치
+
+        input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 startTest();
             }
         });
     });
 </script>
+
 
 </body>
 </html>
