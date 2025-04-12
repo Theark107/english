@@ -59,20 +59,24 @@
     </div>
 
     <script>
-        function startTest() {
-            const studentName = document.getElementById("student-name").value.trim();
-            if (!studentName) {
-                alert("학생 이름을 입력해주세요.");
-                return;
-            }
-
-            // 학생 이름을 localStorage에 저장
-            localStorage.setItem("studentName", studentName);
-
-            // 시험 페이지로 이동
-            window.location.href = "practice.html";
+    function startTest() {
+        const studentName = document.getElementById("student-name").value.trim();
+        if (!studentName) {
+            alert("학생 이름을 입력해주세요.");
+            return;
         }
-    </script>
+
+        localStorage.setItem("studentName", studentName);
+        window.location.href = "practice.html";
+    }
+
+    // 엔터 키로도 startTest 실행
+    document.getElementById("student-name").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            startTest();
+        }
+    });
+</script>
 
 </body>
 </html>
