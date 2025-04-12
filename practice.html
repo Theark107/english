@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>단계별 영어 연습</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+
+        .header input {
+            font-size: 24px;
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            width: 25%;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #444;
+            text-align: center;
+        }
+
+        .question {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        input.correct {
+            border-color: green;
+        }
+
+        input.wrong {
+            border-color: red;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #results-summary {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        .correct-text {
+            color: green;
+        }
+
+        .wrong-text {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="logo.png" alt="로고">
+        <br>
+    </div>
+
+    <h2>*1단계(주어+동사)</h2>
+
+    <!-- 문제 영역 -->
+    <div class="question"><h2>1. 나는 잔다</h2><input type="text" id="english1"><div id="result1"></div></div>
+    <div class="question"><h2>2. 그는 먹는다</h2><input type="text" id="english2"><div id="result2"></div></div>
+    <div class="question"><h2>3. 그녀는 걷는다</h2><input type="text" id="english3"><div id="result3"></div></div>
+    <div class="question"><h2>4. 우리는 공부한다</h2><input type="text" id="english4"><div id="result4"></div></div>
+    <div class="question"><h2>5. 너는 달린다</h2><input type="text" id="english5"><div id="result5"></div></div>
+    <div class="question"><h2>6. 그는 운전한다</h2><input type="text" id="english6"><div id="result6"></div></div>
+    <div class="question"><h2>7. 나는 말한다</h2><input type="text" id="english7"><div id="result7"></div></div>
+    <div class="question"><h2>8. 그녀는 듣는다</h2><input type="text" id="english8"><div id="result8"></div></div>
+    <div class="question"><h2>9. 우리는 앉는다</h2><input type="text" id="english9"><div id="result9"></div></div>
+    <div class="question"><h2>10. 너는 쓴다</h2><input type="text" id="english10"><div id="result10"></div></div>
+    <div class="question"><h2>11. 그는 읽는다</h2><input type="text" id="english11"><div id="result11"></div></div>
+    <div class="question"><h2>12. 나는 만든다</h2><input type="text" id="english12"><div id="result12"></div></div>
+    <div class="question"><h2>13. 그녀는 운다</h2><input type="text" id="english13"><div id="result13"></div></div>
+    <div class="question"><h2>14. 우리는 웃는다</h2><input type="text" id="english14"><div id="result14"></div></div>
+    <div class="question"><h2>15. 나는 청소한다</h2><input type="text" id="english15"><div id="result15"></div></div>
+
+    <!-- 채점 및 초기화 버튼 -->
+    <div style="text-align:center;">
+        <button onclick="checkAllAnswers()">전체 채점하기</button>
+        <button onclick="resetAll()" style="background-color: #dc3545;">다시 풀기</button>
+    </div>
+
+    <div id="results-summary"></div>
+
+    <script>
+        const answers = {
+            1: "I sleep.",
+            2: "He eats.",
+            3: "She walks.",
+            4: "We study.",
+            5: "You run.",
+            6: "He drives.",
+            7: "I speak.",
+            8: "She listens.",
+            9: "We sit.",
+            10: "You write.",
+            11: "He reads.",
+            12: "I make.",
+            13: "She cries.",
+            14: "We laugh.",
+            15: "I clean."
+        };
+
+        function checkAllAnswers() {
+    let correctCount = 0;
+
+    // 1~15 문제에 대해 채점
+    for (let i = 1; i <= 15; i++) {
+        const input = document.getElementById("english" + i);
+        const resultDiv = document.getElementById("result" + i);
+        const userAnswer = input.value.trim();
+        const correctAnswer = answers[i];
+
+        if (userAnswer === correctAnswer) {
+            resultDiv.innerHTML = "<span class='correct-text'>정답이에요!</span>";
+            input.classList.remove("wrong");
+            input.classList.add("correct");
+            correctCount++;
+        } else {
+            resultDiv.innerHTML = "<span class='wrong-text'>다시 시도해 보세요.</span>";
+            input.classList.remove("correct");
+            input.classList.add("wrong");
+        }
+    }
+
+    const score = Math.round((correctCount / 15) * 100);
+    const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
+    document.getElementById("results-summary").innerHTML =
+        `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
+
+    // 학생 이름을 localStorage에서 가져오기
+    const studentName = localStorage.getItem("studentName");
+
+    if (!studentName) {
+        alert("학생 이름이 저장되지 않았습니다.");
+        return;
+    }
+
+    let scores = JSON.parse(localStorage.getItem("studentScores")) || [];
+    const existingIndex = scores.findIndex(entry => entry.name === studentName);
+
+    if (existingIndex !== -1) {
+        scores[existingIndex].score = score;
+        scores[existingIndex].date = new Date().toLocaleString();
+    } else {
+        scores.push({
+            name: studentName,
+            score: score,
+            date: new Date().toLocaleString()
+        });
+    }
+
+    localStorage.setItem("studentScores", JSON.stringify(scores));
+}
+
+
+        function resetAll() {
+            for (let i = 1; i <= 15; i++) {
+                const input = document.getElementById("english" + i);
+                const resultDiv = document.getElementById("result" + i);
+                input.value = "";
+                input.classList.remove("correct", "wrong");
+                resultDiv.innerHTML = "";
+            }
+            document.getElementById("results-summary").innerHTML = "";
+        }
+    </script>
+</body>
+</html>

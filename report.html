@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>학생 성적 리포트</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        .no-records {
+            text-align: center;
+            font-size: 18px;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>학생 성적 리포트</h1>
+
+    <!-- 성적 테이블 -->
+    <div id="results-container"></div>
+
+    <script>
+        window.onload = function() {
+    const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
+
+    if (scores.length === 0) {
+        document.getElementById("results-container").innerHTML = 
+            "<p class='no-records'>저장된 성적이 없습니다.</p>";
+        return;
+    }
+
+    let table = "<table>";
+    table += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
+
+    scores.forEach(score => {
+        table += `<tr>
+                    <td>${score.name}</td>
+                    <td>${score.score}점</td>
+                    <td>${score.date}</td>
+                  </tr>`;
+    });
+
+    table += "</tbody></table>";
+    document.getElementById("results-container").innerHTML = table;
+}
+
+    </script>
+
+</body>
+</html>

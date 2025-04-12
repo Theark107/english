@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        input[type="text"] {
+            font-size: 20px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>학생 이름을 입력하세요</h1>
+        <input type="text" id="student-name" placeholder="이름을 입력하세요">
+        <br>
+        <button onclick="startTest()">시험 보기</button>
+    </div>
+
+    <script>
+        function startTest() {
+            const studentName = document.getElementById("student-name").value.trim();
+            if (!studentName) {
+                alert("학생 이름을 입력해주세요.");
+                return;
+            }
+
+            // 학생 이름을 localStorage에 저장
+            localStorage.setItem("studentName", studentName);
+
+            // 시험 페이지로 이동
+            window.location.href = "practice.html";
+        }
+    </script>
+
+</body>
+</html>
