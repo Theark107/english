@@ -62,7 +62,7 @@
   <h1>학생 성적 리포트</h1>
 
   <div style="text-align:center;">
-    <label for="dateFilter">이 날짜 이후의 기록 보기:</label>
+    <label for="dateFilter">이 날짜 이후의 기록만 보기:</label>
     <input type="date" id="dateFilter" onchange="renderReport()" />
   </div>
 
@@ -97,9 +97,9 @@
         filteredRecords.forEach(record => {
           const readableDate = new Date(record.date).toLocaleString("ko-KR");
           html += `<tr>
-                    <td>${student.name}</td>
-                    <td>${record.score}점</td>
-                    <td>${readableDate}</td>
+                      <td>${student.name}</td>
+                      <td>${record.score}점</td>
+                      <td>${readableDate}</td>
                    </tr>`;
           total += record.score;
           count++;
@@ -108,7 +108,7 @@
         if (count > 0) {
           const avg = Math.round(total / count);
           html += `<tr style="background-color:#f0f0f0">
-                    <td colspan="3"><strong>${student.name} 평균 점수: ${avg}점</strong></td>
+                      <td colspan="3"><strong>${student.name} 평균 점수: ${avg}점</strong></td>
                    </tr>`;
         }
       });
