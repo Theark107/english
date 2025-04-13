@@ -191,16 +191,35 @@
             let scores = JSON.parse(localStorage.getItem("studentScores")) || [];
             const existingIndex = scores.findIndex(entry => entry.name === studentName);
 
-            if (existingIndex !== -1) {
-                scores[existingIndex].score = score;
-                scores[existingIndex].date = new Date().toLocaleString();
-            } else {
-                scores.push({
-                    name: studentName,
-                    score: score,
-                    date: new Date().toLocaleString()
-                });
-            }
+          const studentName = localStorage.getItem("studentName");
+if (!studentName) {
+    alert("학생 이름이 저장되지 않았습니다.");
+    return;
+}
+
+let studentScores = JSON.parse(localStorage.getItem("studentScores")) || [];
+const now = new Date();
+const newRecord = {
+    score: score,
+    date: now.toLocaleDateString("ko-KR") + " " + now.toLocaleTimeString("ko-KR")
+};
+
+const existingIndex = studentScores.findIndex(entry => entry.name === studentName);
+
+if (existingIndex !== -1) {
+    // 이미 존재하는 학생 → 기록 배열에 추가, 3개 유지
+    studentScores[existingIndex].records.unshift(newRecord);
+    studentScores[existingIndex].records = studentScores[existingIndex].records.slice(0, 3);
+} else {
+    // 새로운 학생 → 새로 기록 배열 생성
+    studentScores.push({
+        name: studentName,
+        records: [newRecord]
+    });
+}
+
+localStorage.setItem("studentScores", JSON.stringify(studentScores));
+
 
             localStorage.setItem("studentScores", JSON.stringify(scores));
         }
