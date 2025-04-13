@@ -1,82 +1,84 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>학생 성적 리포트</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f6f8;
-      padding: 20px;
-      line-height: 1.6;
-    }
+    <meta charset="UTF-8" />
+    <title>학생 성적 리포트</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f8;
+            padding: 20px;
+            line-height: 1.6;
+        }
 
-    h1 {
-      text-align: center;
-      color: #333;
-    }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-    table {
-      width: 80%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      border: 1px solid #ddd;
-    }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
 
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #ddd;
-    }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
 
-    th {
-      background-color: #28a745;
-      color: white;
-    }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
 
-    td {
-      background-color: #fff;
-    }
+        td {
+            background-color: #fff;
+        }
 
-    .no-records {
-      text-align: center;
-      font-size: 18px;
-      color: #d9534f;
-    }
-  </style>
+        .no-records {
+            text-align: center;
+            font-size: 18px;
+            color: #d9534f;
+        }
+    </style>
 </head>
 <body>
-  <h1>학생 성적 리포트</h1>
-  <div id="results-container"></div>
 
-  <script>
-    window.onload = function () {
-      const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
+    <h1>학생 성적 리포트</h1>
+    <div id="results-container"></div>
 
-      if (scores.length === 0) {
-        document.getElementById("results-container").innerHTML =
-          "<p class='no-records'>저장된 성적이 없습니다.</p>";
-        return;
-      }
+    <script>
+        window.onload = function () {
+            const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
 
-      let table = "<table>";
-      table += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
+            if (!Array.isArray(scores) || scores.length === 0) {
+                document.getElementById("results-container").innerHTML =
+                    "<p class='no-records'>저장된 성적이 없습니다.</p>";
+                return;
+            }
 
-      scores.forEach(student => {
-        if (student.records && student.records.length > 0) {
-          student.records.forEach(record => {
-            table += `<tr>
-                        <td>${student.name}</td>
-                        <td>${record.score}점</td>
-                        <td>${record.date}</td>
-                      </tr>`;
-          });
-        }
-      });
+            let tableHTML = "<table>";
+            tableHTML += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
 
-      table += "</tbody></table>";
-      document.getElementById("results-container").innerHTML = table;
-    };
-  </script>
+            scores.forEach(student => {
+                if (Array.isArray(student.records)) {
+                    student.records.forEach(record => {
+                        tableHTML += `<tr>
+                                        <td>${student.name}</td>
+                                        <td>${record.score}점</td>
+                                        <td>${record.date}</td>
+                                      </tr>`;
+                    });
+                }
+            });
+
+            tableHTML += "</tbody></table>";
+            document.getElementById("results-container").innerHTML = tableHTML;
+        };
+    </script>
+
 </body>
 </html>
