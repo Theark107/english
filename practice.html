@@ -86,9 +86,9 @@
         }
 
         .next-button {
-            display: block;
+            display: none; /* 처음에는 숨김 */
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .next-button a {
@@ -140,7 +140,7 @@
     <div id="results-summary"></div>
 
     <!-- 다음 단계 버튼 -->
-    <div class="next-button">
+    <div class="next-button" id="nextStepBtn">
         <a href="practice2.html">다음 단계로 이동하기</a>
     </div>
 
@@ -162,6 +162,8 @@
             14: "We laugh.",
             15: "I clean."
         };
+
+        const STORAGE_KEY = "practice1_scores";
 
         function checkAllAnswers() {
             let correctCount = 0;
@@ -188,6 +190,25 @@
             const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
             document.getElementById("results-summary").innerHTML =
                 `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
+
+            // 점수 저장 (최대 3개 유지)
+            let scoreRecords = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const now = new Date();
+            const newRecord = {
+                score: score,
+                date: now.toLocaleDateString("ko-KR") + " " + now.toLocaleTimeString("ko-KR")
+            };
+            scoreRecords.unshift(newRecord);
+            scoreRecords = scoreRecords.slice(0, 3); // 최근 3개만 유지
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(scoreRecords));
+
+            // 점수가 85점 이상이면 버튼 보여줌
+            const nextBtn = document.getElementById("nextStepBtn");
+            if (score >= 85) {
+                nextBtn.style.display = "block";
+            } else {
+                nextBtn.style.display = "none";
+            }
         }
 
         function resetAll() {
@@ -199,6 +220,7 @@
                 resultDiv.innerHTML = "";
             }
             document.getElementById("results-summary").innerHTML = "";
+            document.getElementById("nextStepBtn").style.display = "none";
         }
     </script>
 </body>
