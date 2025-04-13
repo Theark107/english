@@ -103,7 +103,12 @@
         `;
 
         records.forEach(r => {
-          const dateOnly = new Date(r.date).toISOString().slice(0, 10); // YYYY-MM-DD
+          const dateOnly = new Date(r.date).toLocaleDateString("ko-KR", {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }).replace(/\./g, '-').replace(/\s/g, '');
+
           table += `<tr><td>${r.score}점 (${dateOnly})</td></tr>`;
           total += r.score;
         });
