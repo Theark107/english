@@ -1,295 +1,251 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>단계별 영어 연습</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f6f8;
-            padding: 20px;
-            line-height: 1.6;
-        }
+  <meta charset="UTF-8">
+  <title>단계별 영어 연습</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+      line-height: 1.6;
+    }
 
-        .header {
-            text-align: left;
-            margin-bottom: 20px;
-        }
+    .header {
+      text-align: left;
+      margin-bottom: 20px;
+    }
 
-        .header img {
-            max-width: 200px;
-            margin-bottom: 10px;
-        }
+    .header img {
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
 
-        .header input {
-            font-size: 20px;
-            padding: 8px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            width: 300px;
-            margin-top: 10px;
-        }
+    .header input {
+      font-size: 20px;
+      padding: 8px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      width: 300px;
+      margin-top: 10px;
+    }
 
-        h2 {
-            font-size: 18px;
-            color: #444;
-            text-align: center;
-        }
+    h2 {
+      font-size: 18px;
+      color: #444;
+      text-align: center;
+    }
 
-        .question {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 15px auto;
-            border-radius: 8px;
-            max-width: 500px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
+    .question {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 15px auto;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
 
-        input[type="text"] {
-            width: 95%;
-            padding: 8px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            transition: border-color 0.3s;
-        }
+    input[type="text"] {
+      width: 95%;
+      padding: 8px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: border-color 0.3s;
+    }
 
-        input.correct {
-            border-color: green;
-        }
+    input.correct {
+      border-color: green;
+    }
 
-        input.wrong {
-            border-color: red;
-        }
+    input.wrong {
+      border-color: red;
+    }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 20px 10px;
-        }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 20px 10px;
+    }
 
-        button:hover {
-            background-color: #218838;
-        }
+    button:hover {
+      background-color: #218838;
+    }
 
-        #results-summary {
-            text-align: center;
-            font-weight: bold;
-            margin-top: 30px;
-            font-size: 18px;
-        }
+    #results-summary {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 18px;
+    }
 
-        #student-record {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 10px;
-            background: #fff;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
+    .correct-text {
+      color: green;
+    }
 
-        #student-record h3 {
-            text-align: center;
-            margin: 10px 0;
-        }
+    .wrong-text {
+      color: red;
+    }
 
-        #student-record ul {
-            list-style: disc;
-            padding-left: 30px;
-        }
+    .next-button {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
 
-        .correct-text {
-            color: green;
-        }
+    .next-button a {
+      text-decoration: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      display: inline-block;
+    }
 
-        .wrong-text {
-            color: red;
-        }
-
-        .next-button {
-            display: none;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .next-button a {
-            text-decoration: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .next-button a:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    .next-button a:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="logo.png" alt="로고"><br>
-        <label for="studentNameInput">학생 이름을 입력하세요:</label><br>
-        <input type="text" id="studentNameInput" placeholder="예: 홍길동">
-    </div>
+  <div class="header">
+    <img src="logo.png" alt="로고" onclick="location.href='index.html'" style="cursor:pointer;"><br>
+    <label for="studentNameInput">학생 이름을 입력하세요:</label><br>
+    <input type="text" id="studentNameInput" placeholder="예: 홍길동">
+  </div>
 
-    <h2>*1단계(주어+동사)</h2>
+  <h2>*1단계(주어+동사)</h2>
 
-    <!-- 문제 영역 -->
-    <div class="question"><h2>1. 나는 잔다</h2><input type="text" id="english1"><div id="result1"></div></div>
-    <div class="question"><h2>2. 그는 먹는다</h2><input type="text" id="english2"><div id="result2"></div></div>
-    <div class="question"><h2>3. 그녀는 걷는다</h2><input type="text" id="english3"><div id="result3"></div></div>
-    <div class="question"><h2>4. 우리는 공부한다</h2><input type="text" id="english4"><div id="result4"></div></div>
-    <div class="question"><h2>5. 너는 달린다</h2><input type="text" id="english5"><div id="result5"></div></div>
-    <div class="question"><h2>6. 그는 운전한다</h2><input type="text" id="english6"><div id="result6"></div></div>
-    <div class="question"><h2>7. 나는 말한다</h2><input type="text" id="english7"><div id="result7"></div></div>
-    <div class="question"><h2>8. 그녀는 듣는다</h2><input type="text" id="english8"><div id="result8"></div></div>
-    <div class="question"><h2>9. 우리는 앉는다</h2><input type="text" id="english9"><div id="result9"></div></div>
-    <div class="question"><h2>10. 너는 쓴다</h2><input type="text" id="english10"><div id="result10"></div></div>
-    <div class="question"><h2>11. 그는 읽는다</h2><input type="text" id="english11"><div id="result11"></div></div>
-    <div class="question"><h2>12. 나는 만든다</h2><input type="text" id="english12"><div id="result12"></div></div>
-    <div class="question"><h2>13. 그녀는 운다</h2><input type="text" id="english13"><div id="result13"></div></div>
-    <div class="question"><h2>14. 우리는 웃는다</h2><input type="text" id="english14"><div id="result14"></div></div>
-    <div class="question"><h2>15. 나는 청소한다</h2><input type="text" id="english15"><div id="result15"></div></div>
+  <!-- 문제 영역 -->
+  <div class="question"><h2>1. 나는 잔다</h2><input type="text" id="english1"><div id="result1"></div></div>
+  <div class="question"><h2>2. 그는 먹는다</h2><input type="text" id="english2"><div id="result2"></div></div>
+  <div class="question"><h2>3. 그녀는 걷는다</h2><input type="text" id="english3"><div id="result3"></div></div>
+  <div class="question"><h2>4. 우리는 공부한다</h2><input type="text" id="english4"><div id="result4"></div></div>
+  <div class="question"><h2>5. 너는 달린다</h2><input type="text" id="english5"><div id="result5"></div></div>
+  <div class="question"><h2>6. 그는 운전한다</h2><input type="text" id="english6"><div id="result6"></div></div>
+  <div class="question"><h2>7. 나는 말한다</h2><input type="text" id="english7"><div id="result7"></div></div>
+  <div class="question"><h2>8. 그녀는 듣는다</h2><input type="text" id="english8"><div id="result8"></div></div>
+  <div class="question"><h2>9. 우리는 앉는다</h2><input type="text" id="english9"><div id="result9"></div></div>
+  <div class="question"><h2>10. 너는 쓴다</h2><input type="text" id="english10"><div id="result10"></div></div>
+  <div class="question"><h2>11. 그는 읽는다</h2><input type="text" id="english11"><div id="result11"></div></div>
+  <div class="question"><h2>12. 나는 만든다</h2><input type="text" id="english12"><div id="result12"></div></div>
+  <div class="question"><h2>13. 그녀는 운다</h2><input type="text" id="english13"><div id="result13"></div></div>
+  <div class="question"><h2>14. 우리는 웃는다</h2><input type="text" id="english14"><div id="result14"></div></div>
+  <div class="question"><h2>15. 나는 청소한다</h2><input type="text" id="english15"><div id="result15"></div></div>
 
-    <!-- 채점 및 초기화 버튼 -->
-    <div style="text-align:center;">
-        <button onclick="checkAllAnswers()">전체 채점하기</button>
-        <button onclick="resetAll()" style="background-color: #dc3545;">다시 풀기</button>
-    </div>
+  <!-- 채점 및 초기화 버튼 -->
+  <div style="text-align:center;">
+    <button onclick="checkAllAnswers()">전체 채점하기</button>
+    <button onclick="resetAll()" style="background-color: #dc3545;">다시 풀기</button>
+  </div>
 
-    <div id="results-summary"></div>
+  <div id="results-summary"></div>
 
-    <div id="student-record"></div>
+  <div class="next-button" id="nextStepBtn">
+    <a href="practice2.html">다음 단계로 이동하기</a>
+  </div>
 
-    <!-- 다음 단계 버튼 -->
-    <div class="next-button" id="nextStepBtn">
-        <a href="practice2.html">다음 단계로 이동하기</a>
-    </div>
+  <script>
+    const answers = {
+      1: "I sleep.",
+      2: "He eats.",
+      3: "She walks.",
+      4: "We study.",
+      5: "You run.",
+      6: "He drives.",
+      7: "I speak.",
+      8: "She listens.",
+      9: "We sit.",
+      10: "You write.",
+      11: "He reads.",
+      12: "I make.",
+      13: "She cries.",
+      14: "We laugh.",
+      15: "I clean."
+    };
 
-    <script>
-        const answers = {
-            1: "I sleep.",
-            2: "He eats.",
-            3: "She walks.",
-            4: "We study.",
-            5: "You run.",
-            6: "He drives.",
-            7: "I speak.",
-            8: "She listens.",
-            9: "We sit.",
-            10: "You write.",
-            11: "He reads.",
-            12: "I make.",
-            13: "She cries.",
-            14: "We laugh.",
-            15: "I clean."
-        };
+    function checkAllAnswers() {
+      const studentName = document.getElementById("studentNameInput").value.trim();
+      if (!studentName) {
+        alert("학생 이름을 입력해주세요.");
+        return;
+      }
 
-        function checkAllAnswers() {
-            const studentName = document.getElementById("studentNameInput").value.trim();
-            if (!studentName) {
-                alert("학생 이름을 입력해주세요.");
-                return;
-            }
+      localStorage.setItem("studentName", studentName);
 
-            localStorage.setItem("studentName", studentName);  // 이름 재저장
+      let correctCount = 0;
+      for (let i = 1; i <= 15; i++) {
+        const input = document.getElementById("english" + i);
+        const resultDiv = document.getElementById("result" + i);
+        const userAnswer = input.value.trim();
+        const correctAnswer = answers[i];
 
-            let correctCount = 0;
-            for (let i = 1; i <= 15; i++) {
-                const input = document.getElementById("english" + i);
-                const resultDiv = document.getElementById("result" + i);
-                const userAnswer = input.value.trim();
-                const correctAnswer = answers[i];
-
-                if (userAnswer === correctAnswer) {
-                    resultDiv.innerHTML = "<span class='correct-text'>정답이에요!</span>";
-                    input.classList.remove("wrong");
-                    input.classList.add("correct");
-                    correctCount++;
-                } else {
-                    resultDiv.innerHTML = "<span class='wrong-text'>다시 시도해 보세요.</span>";
-                    input.classList.remove("correct");
-                    input.classList.add("wrong");
-                }
-            }
-
-            const score = Math.round((correctCount / 15) * 100);
-            const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
-            document.getElementById("results-summary").innerHTML =
-                `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
-
-            // 점수 저장
-            const allScores = JSON.parse(localStorage.getItem("studentScores")) || [];
-            const now = new Date();
-            const newRecord = {
-                score: score,
-                date: now.toLocaleDateString("ko-KR") + " " + now.toLocaleTimeString("ko-KR")
-            };
-
-            const index = allScores.findIndex(entry => entry.name === studentName);
-            if (index !== -1) {
-                allScores[index].records.unshift(newRecord);
-                allScores[index].records = allScores[index].records.slice(0, 3);
-            } else {
-                allScores.push({
-                    name: studentName,
-                    records: [newRecord]
-                });
-            }
-            localStorage.setItem("studentScores", JSON.stringify(allScores));
-            showStudentHistory(studentName);
-
-            document.getElementById("nextStepBtn").style.display = score >= 85 ? "block" : "none";
+        if (userAnswer === correctAnswer) {
+          resultDiv.innerHTML = "<span class='correct-text'>정답이에요!</span>";
+          input.classList.remove("wrong");
+          input.classList.add("correct");
+          correctCount++;
+        } else {
+          resultDiv.innerHTML = "<span class='wrong-text'>다시 시도해 보세요.</span>";
+          input.classList.remove("correct");
+          input.classList.add("wrong");
         }
+      }
 
-        function resetAll() {
-            for (let i = 1; i <= 15; i++) {
-                const input = document.getElementById("english" + i);
-                const resultDiv = document.getElementById("result" + i);
-                input.value = "";
-                input.classList.remove("correct", "wrong");
-                resultDiv.innerHTML = "";
-            }
-            document.getElementById("results-summary").innerHTML = "";
-            document.getElementById("student-record").innerHTML = "";
-            document.getElementById("nextStepBtn").style.display = "none";
-        }
+      const score = Math.round((correctCount / 15) * 100);
+      const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
+      document.getElementById("results-summary").innerHTML =
+        `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
 
-        function showStudentHistory(name) {
-            const allScores = JSON.parse(localStorage.getItem("studentScores")) || [];
-            const student = allScores.find(entry => entry.name === name);
-            const container = document.getElementById("student-record");
+      const allScores = JSON.parse(localStorage.getItem("studentScores")) || [];
+      const now = new Date();
+      const newRecord = {
+        score: score,
+        date: now.toISOString()  // ISO 형식으로 저장
+      };
 
-            if (!student) {
-                container.innerHTML = "";
-                return;
-            }
+      const index = allScores.findIndex(entry => entry.name === studentName);
+      if (index !== -1) {
+        allScores[index].records.unshift(newRecord);
+        allScores[index].records = allScores[index].records.slice(0, 3);
+      } else {
+        allScores.push({
+          name: studentName,
+          records: [newRecord]
+        });
+      }
+      localStorage.setItem("studentScores", JSON.stringify(allScores));
 
-            let html = `<h3>${name}의 최근 기록</h3><ul>`;
-            student.records.forEach(r => {
-                html += `<li>${r.date} - ${r.score}점</li>`;
-            });
-            html += "</ul>";
-            container.innerHTML = html;
-        }
+      document.getElementById("nextStepBtn").style.display = score >= 85 ? "block" : "none";
+    }
 
-        // 이름 자동 채우기
-        window.onload = function () {
-            const storedName = localStorage.getItem("studentName");
-            if (storedName) {
-                document.getElementById("studentNameInput").value = storedName;
-            }
-        };
-    </script>
+    function resetAll() {
+      for (let i = 1; i <= 15; i++) {
+        const input = document.getElementById("english" + i);
+        const resultDiv = document.getElementById("result" + i);
+        input.value = "";
+        input.classList.remove("correct", "wrong");
+        resultDiv.innerHTML = "";
+      }
+      document.getElementById("results-summary").innerHTML = "";
+      document.getElementById("nextStepBtn").style.display = "none";
+    }
+
+    window.onload = function () {
+      const storedName = localStorage.getItem("studentName");
+      if (storedName) {
+        document.getElementById("studentNameInput").value = storedName;
+      }
+    };
+  </script>
 </body>
 </html>
