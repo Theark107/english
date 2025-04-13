@@ -11,22 +11,9 @@
       line-height: 1.6;
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
-
-    .header img {
-      max-height: 60px;
-      cursor: pointer;
-    }
-
     h1 {
       text-align: center;
       color: #333;
-      margin: 10px 0;
     }
 
     label {
@@ -68,45 +55,18 @@
       font-size: 18px;
       color: #d9534f;
     }
-
-    .next-button {
-      display: none;
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .next-button a {
-      text-decoration: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border-radius: 4px;
-      display: inline-block;
-    }
-
-    .next-button a:hover {
-      background-color: #0056b3;
-    }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <img src="logo.png" alt="로고" onclick="location.href='index.html'">
-    <h1>학생 성적 리포트</h1>
-  </div>
+  <h1>학생 성적 리포트</h1>
 
   <div style="text-align:center;">
-    <label for="dateFilter">이 날짜 이후의 기록만 보기:</label>
+    <label for="dateFilter">이 날짜 이후의 기록 보기:</label>
     <input type="date" id="dateFilter" onchange="renderReport()" />
   </div>
 
   <div id="results-container"></div>
-
-  <div class="next-button" id="nextStepBtn">
-    <a href="practice2.html">다음 단계로 이동하기</a>
-  </div>
 
   <script>
     function renderReport() {
@@ -115,50 +75,46 @@
       const container = document.getElementById("results-container");
       container.innerHTML = "";
 
-      if (scores.length === 0) {
+      if (!Array.isArray(scores) || scores.length === 0) {
         container.innerHTML = "<p class='no-records'>저장된 성적이 없습니다.</p>";
         return;
       }
 
-      // 이름 가나다순 정렬
       scores.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
       let html = "<table>";
       html += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
 
-      let hasPassed = false;
-
       scores.forEach(student => {
         let total = 0;
         let count = 0;
 
-        student.records.forEach(record => {
-          if (dateFilter && new Date(record.date) < new Date(dateFilter)) return;
+        const filteredRecords = student.records.filter(record => {
+          if (!dateFilter) return true;
+          return new Date(record.date) >= new Date(dateFilter);
+        });
 
+        filteredRecords.forEach(record => {
+          const readableDate = new Date(record.date).toLocaleString("ko-KR");
           html += `<tr>
                     <td>${student.name}</td>
                     <td>${record.score}점</td>
-                    <td>${record.date}</td>
-                  </tr>`;
+                    <td>${readableDate}</td>
+                   </tr>`;
           total += record.score;
           count++;
-
-          if (record.score >= 85) hasPassed = true;
         });
 
         if (count > 0) {
           const avg = Math.round(total / count);
           html += `<tr style="background-color:#f0f0f0">
-                      <td colspan="3"><strong>${student.name} 평균 점수: ${avg}점</strong></td>
-                  </tr>`;
+                    <td colspan="3"><strong>${student.name} 평균 점수: ${avg}점</strong></td>
+                   </tr>`;
         }
       });
 
       html += "</tbody></table>";
       container.innerHTML = html;
-
-      // 85점 이상 하나라도 있으면 버튼 표시
-      document.getElementById("nextStepBtn").style.display = hasPassed ? "block" : "none";
     }
 
     window.onload = renderReport;
