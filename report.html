@@ -88,7 +88,6 @@
 
       scores.forEach(student => {
         const { name, records } = student;
-
         if (!records || records.length === 0) return;
 
         let total = 0;
@@ -98,13 +97,14 @@
             <h2>${name}</h2>
             <table>
               <thead>
-                <tr><th>점수</th></tr>
+                <tr><th>점수 (시험 날짜)</th></tr>
               </thead>
               <tbody>
         `;
 
         records.forEach(r => {
-          table += `<tr><td>${r.score}점</td></tr>`;
+          const dateOnly = new Date(r.date).toISOString().slice(0, 10); // YYYY-MM-DD
+          table += `<tr><td>${r.score}점 (${dateOnly})</td></tr>`;
           total += r.score;
         });
 
