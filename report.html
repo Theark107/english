@@ -98,14 +98,13 @@
             <h2>${name}</h2>
             <table>
               <thead>
-                <tr><th>점수</th><th>시험 날짜</th></tr>
+                <tr><th>점수</th></tr>
               </thead>
               <tbody>
         `;
 
         records.forEach(r => {
-          const readableDate = new Date(r.date).toLocaleString("ko-KR");
-          table += `<tr><td>${r.score}점</td><td>${readableDate}</td></tr>`;
+          table += `<tr><td>${r.score}점</td></tr>`;
           total += r.score;
         });
 
@@ -113,7 +112,7 @@
 
         table += `
               <tr class="average-row">
-                <td colspan="2">평균 점수: ${avg}점</td>
+                <td>평균 점수: ${avg}점</td>
               </tr>
               </tbody>
             </table>
