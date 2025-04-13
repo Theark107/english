@@ -7,8 +7,7 @@
     body {
       font-family: 'Arial', sans-serif;
       background-color: #f4f6f8;
-      padding: 20px;
-      line-height: 1.6;
+      padding: 30px;
     }
 
     h1 {
@@ -16,25 +15,43 @@
       color: #333;
     }
 
+    #search-box {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #search-box input {
+      font-size: 16px;
+      padding: 8px 12px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
     .student-box {
       background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       margin: 30px auto;
       padding: 20px;
       max-width: 800px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+    }
+
+    .student-box:hover {
+      transform: scale(1.01);
     }
 
     .student-box h2 {
       text-align: center;
-      color: #555;
-      margin-bottom: 15px;
+      color: #444;
+      margin-bottom: 20px;
     }
 
     .tables-wrapper {
       display: flex;
-      gap: 0; /* 간격 제거 */
+      gap: 0;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -43,25 +60,26 @@
       width: 300px;
       border-collapse: collapse;
       margin: 0 5px;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     th {
-      background-color: #28a745;
+      background-color: #007bff;
       color: white;
+      padding: 12px;
+      font-size: 16px;
     }
 
     td {
-      background-color: #fff;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      background-color: #fdfdfd;
+      font-size: 15px;
     }
 
     .average-row {
-      background-color: #f1f1f1;
+      background-color: #e9ecef;
       font-weight: bold;
     }
 
@@ -76,12 +94,28 @@
 <body>
 
   <h1>학생 성적 리포트</h1>
+  <div id="search-box">
+    <input type="text" id="searchInput" placeholder="학생 이름 검색..." oninput="renderReport()" />
+  </div>
   <div id="results-container"></div>
 
   <script>
-    window.onload = function () {
+    function isToday(dateStr) {
+      const d = new Date(dateStr);
+      const today = new Date();
+      return (
+        d.getFullYear() === today.getFullYear() &&
+        d.getMonth() === today.getMonth() &&
+        d.getDate() === today.getDate()
+      );
+    }
+
+    function renderReport() {
       const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
       const container = document.getElementById("results-container");
+      const searchValue = document.getElementById("searchInput").value.trim();
+
+      container.innerHTML = "";
 
       if (!Array.isArray(scores) || scores.length === 0) {
         container.innerHTML = "<p class='no-records'>저장된 성적이 없습니다.</p>";
@@ -96,6 +130,11 @@
         const { name, records } = student;
         if (!records || records.length === 0) return;
 
+        if (searchValue && !name.includes(searchValue)) return;
+
+        const todayRecords = records.filter(r => isToday(r.date));
+        if (todayRecords.length === 0) return;
+
         let total = 0;
         let scoreTable = `
           <table>
@@ -108,19 +147,20 @@
             <tbody>
         `;
 
-        records.forEach(r => {
+        todayRecords.forEach((r, idx) => {
+          const label = `${idx + 1}차`;
           const dateOnly = new Date(r.date).toLocaleDateString("ko-KR", {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
           }).replace(/\./g, '-').replace(/\s/g, '');
 
-          scoreTable += `<tr><td>${r.score}점</td></tr>`;
-          dateTable += `<tr><td>${dateOnly}</td></tr>`;
+          scoreTable += `<tr><td>${label}: ${r.score}점</td></tr>`;
+          dateTable += `<tr><td>${label}: ${dateOnly}</td></tr>`;
           total += r.score;
         });
 
-        const avg = Math.round(total / records.length);
+        const avg = Math.round(total / todayRecords.length);
         scoreTable += `<tr class="average-row"><td>평균: ${avg}점</td></tr>`;
 
         scoreTable += "</tbody></table>";
@@ -137,8 +177,10 @@
         `;
       });
 
-      container.innerHTML = content;
-    };
+      container.innerHTML = content || "<p class='no-records'>오늘 시험 본 기록이 없습니다.</p>";
+    }
+
+    window.onload = renderReport;
   </script>
 
 </body>
