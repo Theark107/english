@@ -16,23 +16,26 @@
       color: #333;
     }
 
-    label {
-      font-weight: bold;
+    .student-box {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 800px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
-    input[type="date"] {
-      padding: 6px;
-      font-size: 14px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin: 10px;
+    .student-box h2 {
+      text-align: center;
+      color: #555;
+      margin-bottom: 15px;
     }
 
     table {
       width: 100%;
-      margin: 20px auto;
       border-collapse: collapse;
-      border: 1px solid #ddd;
+      margin-top: 10px;
     }
 
     th, td {
@@ -50,82 +53,78 @@
       background-color: #fff;
     }
 
+    .average-row {
+      background-color: #f1f1f1;
+      font-weight: bold;
+    }
+
     .no-records {
       text-align: center;
       font-size: 18px;
       color: #d9534f;
+      margin-top: 50px;
     }
   </style>
 </head>
 <body>
 
   <h1>학생 성적 리포트</h1>
-
-  <div style="text-align:center;">
-    <label for="dateFilter">이 날짜 이후의 기록만 보기:</label>
-    <input type="date" id="dateFilter" onchange="renderReport()" />
-  </div>
-
   <div id="results-container"></div>
 
   <script>
-    function renderReport() {
+    window.onload = function () {
       const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
-      const dateFilter = document.getElementById("dateFilter").value;
       const container = document.getElementById("results-container");
-      container.innerHTML = "";
-
-      // 디버깅 로그
-      console.log("로컬 studentScores 데이터:", scores);
-      console.log("선택한 날짜 필터:", dateFilter);
 
       if (!Array.isArray(scores) || scores.length === 0) {
         container.innerHTML = "<p class='no-records'>저장된 성적이 없습니다.</p>";
         return;
       }
 
-      // 이름 가나다순 정렬
+      // 가나다순 정렬
       scores.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
-      let html = "<table>";
-      html += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
+      let content = "";
 
       scores.forEach(student => {
+        const { name, records } = student;
+
+        if (!records || records.length === 0) return;
+
         let total = 0;
-        let count = 0;
 
-        const filteredRecords = student.records.filter(record => {
-          if (!dateFilter) return true;
-          return new Date(record.date).getTime() >= new Date(dateFilter).getTime();
+        let table = `
+          <div class="student-box">
+            <h2>${name}</h2>
+            <table>
+              <thead>
+                <tr><th>점수</th><th>시험 날짜</th></tr>
+              </thead>
+              <tbody>
+        `;
+
+        records.forEach(r => {
+          const readableDate = new Date(r.date).toLocaleString("ko-KR");
+          table += `<tr><td>${r.score}점</td><td>${readableDate}</td></tr>`;
+          total += r.score;
         });
 
-        // 디버깅 로그
-        console.log(`학생: ${student.name}, 필터된 기록 수: ${filteredRecords.length}`);
+        const avg = Math.round(total / records.length);
 
-        filteredRecords.forEach(record => {
-          const readableDate = new Date(record.date).toLocaleString("ko-KR");
-          html += `<tr>
-                      <td>${student.name}</td>
-                      <td>${record.score}점</td>
-                      <td>${readableDate}</td>
-                   </tr>`;
-          total += record.score;
-          count++;
-        });
+        table += `
+              <tr class="average-row">
+                <td colspan="2">평균 점수: ${avg}점</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
 
-        if (count > 0) {
-          const avg = Math.round(total / count);
-          html += `<tr style="background-color:#f0f0f0">
-                      <td colspan="3"><strong>${student.name} 평균 점수: ${avg}점</strong></td>
-                   </tr>`;
-        }
+        content += table;
       });
 
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    window.onload = renderReport;
+      container.innerHTML = content;
+    };
   </script>
 
 </body>
