@@ -12,7 +12,6 @@
     }
 
     .header {
-      text-align: left;
       margin-bottom: 20px;
     }
 
@@ -53,7 +52,6 @@
       border: 2px solid #ccc;
       border-radius: 4px;
       margin-bottom: 10px;
-      transition: border-color 0.3s;
     }
 
     input.correct {
@@ -207,10 +205,9 @@
         `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
 
       const allScores = JSON.parse(localStorage.getItem("studentScores")) || [];
-      const now = new Date();
       const newRecord = {
         score: score,
-        date: now.toISOString()  // ISO 형식으로 저장
+        date: new Date().toISOString()  // ← 정확한 날짜 저장
       };
 
       const index = allScores.findIndex(entry => entry.name === studentName);
@@ -223,6 +220,7 @@
           records: [newRecord]
         });
       }
+
       localStorage.setItem("studentScores", JSON.stringify(allScores));
 
       document.getElementById("nextStepBtn").style.display = score >= 85 ? "block" : "none";
@@ -247,5 +245,6 @@
       }
     };
   </script>
+
 </body>
 </html>
