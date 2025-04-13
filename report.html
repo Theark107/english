@@ -16,6 +16,12 @@
       color: #333;
     }
 
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      cursor: pointer;
+    }
+
     .student-box {
       background-color: #fff;
       border: 1px solid #ccc;
@@ -32,10 +38,16 @@
       margin-bottom: 15px;
     }
 
+    .tables-wrapper {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     table {
-      width: 100%;
+      width: 300px;
       border-collapse: collapse;
-      margin-top: 10px;
     }
 
     th, td {
@@ -68,6 +80,7 @@
 </head>
 <body>
 
+  <img src="logo.png" alt="로고" class="logo" onclick="location.href='index.html'">
   <h1>학생 성적 리포트</h1>
   <div id="results-container"></div>
 
@@ -81,7 +94,6 @@
         return;
       }
 
-      // 가나다순 정렬
       scores.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
       let content = "";
@@ -91,15 +103,15 @@
         if (!records || records.length === 0) return;
 
         let total = 0;
-
-        let table = `
-          <div class="student-box">
-            <h2>${name}</h2>
-            <table>
-              <thead>
-                <tr><th>점수 (시험 날짜)</th></tr>
-              </thead>
-              <tbody>
+        let scoreTable = `
+          <table>
+            <thead><tr><th>점수</th></tr></thead>
+            <tbody>
+        `;
+        let dateTable = `
+          <table>
+            <thead><tr><th>시험 날짜</th></tr></thead>
+            <tbody>
         `;
 
         records.forEach(r => {
@@ -109,22 +121,27 @@
             day: '2-digit'
           }).replace(/\./g, '-').replace(/\s/g, '');
 
-          table += `<tr><td>${r.score}점 (${dateOnly})</td></tr>`;
+          scoreTable += `<tr><td>${r.score}점</td></tr>`;
+          dateTable += `<tr><td>${dateOnly}</td></tr>`;
           total += r.score;
         });
 
         const avg = Math.round(total / records.length);
+        scoreTable += `<tr class="average-row"><td>평균: ${avg}점</td></tr>`;
+        dateTable += `<tr class="average-row"><td>기록: ${records.length}회</td></tr>`;
 
-        table += `
-              <tr class="average-row">
-                <td>평균 점수: ${avg}점</td>
-              </tr>
-              </tbody>
-            </table>
+        scoreTable += "</tbody></table>";
+        dateTable += "</tbody></table>";
+
+        content += `
+          <div class="student-box">
+            <h2>${name}</h2>
+            <div class="tables-wrapper">
+              ${scoreTable}
+              ${dateTable}
+            </div>
           </div>
         `;
-
-        content += table;
       });
 
       container.innerHTML = content;
