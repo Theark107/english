@@ -48,39 +48,37 @@
 <body>
 
     <h1>학생 성적 리포트</h1>
-
-    <!-- 성적 테이블 -->
     <div id="results-container"></div>
 
     <script>
-window.onload = function () {
-    const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
+        window.onload = function () {
+            const scores = JSON.parse(localStorage.getItem("studentScores")) || [];
 
-    if (scores.length === 0) {
-        document.getElementById("results-container").innerHTML =
-            "<p class='no-records'>저장된 성적이 없습니다.</p>";
-        return;
-    }
+            if (scores.length === 0) {
+                document.getElementById("results-container").innerHTML =
+                    "<p class='no-records'>저장된 성적이 없습니다.</p>";
+                return;
+            }
 
-    let table = "<table>";
-    table += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
+            let table = "<table>";
+            table += "<thead><tr><th>학생 이름</th><th>점수</th><th>시험 날짜</th></tr></thead><tbody>";
 
-    scores.forEach(student => {
-        if (student.records && student.records.length > 0) {
-            student.records.forEach(record => {
-                table += `<tr>
-                            <td>${student.name}</td>
-                            <td>${record.score}점</td>
-                            <td>${record.date}</td>
-                          </tr>`;
+            scores.forEach(student => {
+                if (student.records && student.records.length > 0) {
+                    student.records.forEach(record => {
+                        table += `<tr>
+                                    <td>${student.name}</td>
+                                    <td>${record.score}점</td>
+                                    <td>${record.date}</td>
+                                  </tr>`;
+                    });
+                }
             });
-        }
-    });
 
-    table += "</tbody></table>";
-    document.getElementById("results-container").innerHTML = table;
-}
-</script>
+            table += "</tbody></table>";
+            document.getElementById("results-container").innerHTML = table;
+        }
+    </script>
 
 </body>
 </html>
