@@ -75,11 +75,16 @@
       const container = document.getElementById("results-container");
       container.innerHTML = "";
 
+      // 디버깅 로그
+      console.log("로컬 studentScores 데이터:", scores);
+      console.log("선택한 날짜 필터:", dateFilter);
+
       if (!Array.isArray(scores) || scores.length === 0) {
         container.innerHTML = "<p class='no-records'>저장된 성적이 없습니다.</p>";
         return;
       }
 
+      // 이름 가나다순 정렬
       scores.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
       let html = "<table>";
@@ -91,8 +96,11 @@
 
         const filteredRecords = student.records.filter(record => {
           if (!dateFilter) return true;
-          return new Date(record.date) >= new Date(dateFilter);
+          return new Date(record.date).getTime() >= new Date(dateFilter).getTime();
         });
+
+        // 디버깅 로그
+        console.log(`학생: ${student.name}, 필터된 기록 수: ${filteredRecords.length}`);
 
         filteredRecords.forEach(record => {
           const readableDate = new Date(record.date).toLocaleString("ko-KR");
