@@ -26,7 +26,8 @@
             padding: 8px;
             border: 2px solid #ccc;
             border-radius: 4px;
-            width: 25%;
+            width: 40%;
+            margin-top: 10px;
         }
 
         h2 {
@@ -99,11 +100,14 @@
     <div class="header">
         <img src="logo.png" alt="로고">
         <br>
+        <label for="studentNameInput">학생 이름을 입력하세요:</label><br>
+        <input type="text" id="studentNameInput" placeholder="예: 홍길동" oninput="saveStudentName()">
     </div>
 
     <h2>*1단계(주어+동사)</h2>
 
     <!-- 문제 영역 -->
+    <!-- (생략 없이 전체 문제 유지) -->
     <div class="question"><h2>1. 나는 잔다</h2><input type="text" id="english1"><div id="result1"></div></div>
     <div class="question"><h2>2. 그는 먹는다</h2><input type="text" id="english2"><div id="result2"></div></div>
     <div class="question"><h2>3. 그녀는 걷는다</h2><input type="text" id="english3"><div id="result3"></div></div>
@@ -147,58 +151,59 @@
             15: "I clean."
         };
 
-        function checkAllAnswers() {
-    let correctCount = 0;
-
-    // 1~15 문제에 대해 채점
-    for (let i = 1; i <= 15; i++) {
-        const input = document.getElementById("english" + i);
-        const resultDiv = document.getElementById("result" + i);
-        const userAnswer = input.value.trim();
-        const correctAnswer = answers[i];
-
-        if (userAnswer === correctAnswer) {
-            resultDiv.innerHTML = "<span class='correct-text'>정답이에요!</span>";
-            input.classList.remove("wrong");
-            input.classList.add("correct");
-            correctCount++;
-        } else {
-            resultDiv.innerHTML = "<span class='wrong-text'>다시 시도해 보세요.</span>";
-            input.classList.remove("correct");
-            input.classList.add("wrong");
+        function saveStudentName() {
+            const nameInput = document.getElementById("studentNameInput").value.trim();
+            localStorage.setItem("studentName", nameInput);
         }
-    }
 
-    const score = Math.round((correctCount / 15) * 100);
-    const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
-    document.getElementById("results-summary").innerHTML =
-        `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
+        function checkAllAnswers() {
+            let correctCount = 0;
 
-    // 학생 이름을 localStorage에서 가져오기
-    const studentName = localStorage.getItem("studentName");
+            for (let i = 1; i <= 15; i++) {
+                const input = document.getElementById("english" + i);
+                const resultDiv = document.getElementById("result" + i);
+                const userAnswer = input.value.trim();
+                const correctAnswer = answers[i];
 
-    if (!studentName) {
-        alert("학생 이름이 저장되지 않았습니다.");
-        return;
-    }
+                if (userAnswer === correctAnswer) {
+                    resultDiv.innerHTML = "<span class='correct-text'>정답이에요!</span>";
+                    input.classList.remove("wrong");
+                    input.classList.add("correct");
+                    correctCount++;
+                } else {
+                    resultDiv.innerHTML = "<span class='wrong-text'>다시 시도해 보세요.</span>";
+                    input.classList.remove("correct");
+                    input.classList.add("wrong");
+                }
+            }
 
-    let scores = JSON.parse(localStorage.getItem("studentScores")) || [];
-    const existingIndex = scores.findIndex(entry => entry.name === studentName);
+            const score = Math.round((correctCount / 15) * 100);
+            const pass = score >= 85 ? "✅ 합격입니다!" : "❌ 불합격입니다.";
+            document.getElementById("results-summary").innerHTML =
+                `정답 수: ${correctCount} / 15<br>점수: ${score}점<br>${pass}`;
 
-    if (existingIndex !== -1) {
-        scores[existingIndex].score = score;
-        scores[existingIndex].date = new Date().toLocaleString();
-    } else {
-        scores.push({
-            name: studentName,
-            score: score,
-            date: new Date().toLocaleString()
-        });
-    }
+            const studentName = localStorage.getItem("studentName");
+            if (!studentName) {
+                alert("학생 이름이 저장되지 않았습니다.");
+                return;
+            }
 
-    localStorage.setItem("studentScores", JSON.stringify(scores));
-}
+            let scores = JSON.parse(localStorage.getItem("studentScores")) || [];
+            const existingIndex = scores.findIndex(entry => entry.name === studentName);
 
+            if (existingIndex !== -1) {
+                scores[existingIndex].score = score;
+                scores[existingIndex].date = new Date().toLocaleString();
+            } else {
+                scores.push({
+                    name: studentName,
+                    score: score,
+                    date: new Date().toLocaleString()
+                });
+            }
+
+            localStorage.setItem("studentScores", JSON.stringify(scores));
+        }
 
         function resetAll() {
             for (let i = 1; i <= 15; i++) {
@@ -210,6 +215,14 @@
             }
             document.getElementById("results-summary").innerHTML = "";
         }
+
+        // 페이지 로드 시 이름 입력 필드에 기존 값 표시
+        window.onload = function () {
+            const storedName = localStorage.getItem("studentName");
+            if (storedName) {
+                document.getElementById("studentNameInput").value = storedName;
+            }
+        };
     </script>
 </body>
 </html>
