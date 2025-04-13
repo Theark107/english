@@ -16,12 +16,6 @@
       color: #333;
     }
 
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      cursor: pointer;
-    }
-
     .student-box {
       background-color: #fff;
       border: 1px solid #ccc;
@@ -40,7 +34,7 @@
 
     .tables-wrapper {
       display: flex;
-      gap: 20px;
+      gap: 0; /* 간격 제거 */
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -48,6 +42,7 @@
     table {
       width: 300px;
       border-collapse: collapse;
+      margin: 0 5px;
     }
 
     th, td {
@@ -127,7 +122,6 @@
 
         const avg = Math.round(total / records.length);
         scoreTable += `<tr class="average-row"><td>평균: ${avg}점</td></tr>`;
-        dateTable += `<tr class="average-row"><td>기록: ${records.length}회</td></tr>`;
 
         scoreTable += "</tbody></table>";
         dateTable += "</tbody></table>";
